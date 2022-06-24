@@ -5,24 +5,27 @@ import { Constants } from "../common";
 
 import LoginScreen from "../screens/Login";
 import HomeScreen from "../screens/Home";
+import AssignedVisits from "../screens/AssignedVisits";
 
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
-	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen
-					name={Constants.screens.Login}
-					component={LoginScreen}
-				/>
-				<Stack.Screen
-					name={Constants.screens.Home}
-					component={HomeScreen}
-				/>
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name={Constants.screens.Login}
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={Constants.screens.Home}
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default Router;
