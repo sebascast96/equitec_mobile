@@ -1,26 +1,29 @@
-import React from 'react';
-import styles from './styles';
-import {View, Text} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import Typography from '../../components/Typography'
-import { Theme } from '../../common';
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import AssignedVisits from "../AssignedVisits";
+import SavedReports from "../SavedReports";
 
-const HomeComponent = props => {
+const Menu = createDrawerNavigator();
+
+const HomeComponent = (props) => {
   return (
-    <SafeAreaProvider>
-      <View style={styles.homeScreen}>
-        <View style={styles.homeContainer}>
-          <View style={styles.paragraphSize}>
-            <Typography
-              type={'h5'}
-              text={'SCREEN PLACEHOLDER'}
-              style={{color: Theme.colors.ash1}}
-            />
-          </View>
-        </View>
-      </View>
-    </SafeAreaProvider>
+    <NavigationContainer independent={true}>
+      <Menu.Navigator
+        screenOptions={{
+          activeTintColor: "#e91e63",
+          itemStyle: { marginVertical: 5 },
+        }}>
+        <Menu.Screen
+          name="Visitas por realizar"
+          options={{
+            headerTitle: "Nuevo titulo",
+          }}
+          component={AssignedVisits}
+        />
+        <Menu.Screen name="Informes guardados" component={SavedReports} />
+      </Menu.Navigator>
+    </NavigationContainer>
   );
 };
 
