@@ -9,7 +9,7 @@ const LoginScreen = (props) => {
   const navigation = useNavigation();
 
   const handlePressNext = async () => {
-    const res = await login("tecnico.prueba@equitec.com.co", "12345670");
+    const res = await login("tecnico.prueba@equitec.com.co", "123456");
     console.log(res);
     if (res.data == "") {
       console.log("nel");
