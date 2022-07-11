@@ -5,9 +5,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 	},
 	button: {
+		width: 200,
 		alignItems: "center",
-		backgroundColor: "#000000",
-		padding: 10,
+		backgroundColor: "#172C5D",
+		padding: 11,
 		borderRadius: 5,
 	},
 	text:{

@@ -7,6 +7,7 @@ const Constants = {
   language: {
     generic: {
       next: "Siguiente",
+      login: "INICIAR SESION",
     },
   },
 };

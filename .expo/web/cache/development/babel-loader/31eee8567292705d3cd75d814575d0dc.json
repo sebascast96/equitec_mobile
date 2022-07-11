@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default } from \"./Button.screen\";","map":{"version":3,"names":["default"],"sources":["C:/laragon/www/equitec_mobile/src/components/Button/index.jsx"],"sourcesContent":["export {default} from './Button.screen';"],"mappings":"AAAA,SAAQA,OAAR"},"metadata":{},"sourceType":"module"}
