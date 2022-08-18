@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default } from \"./typography\";","map":{"version":3,"names":["default"],"sources":["C:/laragon/www/equitec_mobile/src/components/Typography/index.jsx"],"sourcesContent":["export {default} from './typography';\r\n"],"mappings":"AAAA,SAAQA,OAAR"},"metadata":{},"sourceType":"module"}

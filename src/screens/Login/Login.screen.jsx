@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import styles from "./styles";
 import LoginComponent from "./Login.component";
@@ -8,8 +8,12 @@ import { login } from "../../client/index";
 const LoginScreen = (props) => {
   const navigation = useNavigation();
 
+  const[user, setUser]=useState("");
+  const[password, setPassword]=useState("");
+
   const handlePressNext = async () => {
-    const res = await login("tecnico.prueba@equitec.com.co", "123456");
+    console.log(user,password);
+    const res = await login(user, password);
     console.log(res);
     if (res.data == "") {
       console.log("nel");
@@ -17,7 +21,7 @@ const LoginScreen = (props) => {
       navigation.navigate(Constants.screens.Home);
     }
   };
-  return <LoginComponent handlePressNext={handlePressNext} />;
+  return <LoginComponent handlePressNext={handlePressNext} user={user} password={password}/>;
 };
 
 export default LoginScreen;
