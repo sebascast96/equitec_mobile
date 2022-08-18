@@ -8,11 +8,16 @@ const login = async (email, pass) => {
   return fetchResponse(url);
 };
 
+const visitList = async (id) => {
+  let url = URL + "visit_list?employee_id=" + id;
+  return fetchResponse(url);
+};
+
 const fetchResponse = async (url) => {
   try {
     let request = await axios(url);
-    //console.log("Request: ", request);
-    return request;
+    //console.log("Request: ", request.data);
+    return request.data;
   } catch (err) {
     //If error happened, respond back with error status and body
     if (err.response) {
@@ -31,4 +36,4 @@ const fetchResponse = async (url) => {
   }
 };
 
-export { login };
+export { login, visitList };

@@ -8,6 +8,14 @@ const Constants = {
     generic: {
       next: "Siguiente",
       login: "INICIAR SESION",
+      accept: "Aceptar",
+      sorry: "Lo sentimos",
+    },
+    screensText: {
+      login: {
+        rejected: "Tus credenciales son invalidas",
+      },
+      assignedVisits: {},
     },
   },
 };

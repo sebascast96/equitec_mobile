@@ -1,27 +1,64 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import styles from "./styles";
 import LoginComponent from "./Login.component";
 import { useNavigation } from "@react-navigation/native";
 import { Constants } from "../../common";
 import { login } from "../../client/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const invalidCredentialsModalIntialState = {
+  title: Constants.language.generic.sorry,
+  subtitle: Constants.language.screensText.login.rejected,
+  primaryButtonLabel: Constants.language.generic.accept,
+  isModalVisible: false,
+};
 const LoginScreen = (props) => {
   const navigation = useNavigation();
 
-  const[user, setUser]=useState("");
-  const[password, setPassword]=useState("");
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [invalidModal, setInvalidModal] = useState(
+    invalidCredentialsModalIntialState
+  );
 
   const handlePressNext = async () => {
-    console.log(user,password);
-    const res = await login(user, password);
-    console.log(res);
-    if (res.data == "") {
-      console.log("nel");
+    if (user == "" || password == "") {
+      Alert.alert(Error, "Faltan datos");
     } else {
-      navigation.navigate(Constants.screens.Home);
+      const res = await login(user, password);
+      if (res == "") {
+        setInvalidModal({
+          ...invalidModal,
+          isModalVisible: true,
+        });
+      } else {
+        console.log("id", res[0].id);
+        await AsyncStorage.setItem("@id", "" + res[0].id);
+        await AsyncStorage.setItem("@username", res[0].username);
+        await AsyncStorage.setItem("@email", res[0].email);
+        navigation.navigate(Constants.screens.Home);
+      }
     }
   };
-  return <LoginComponent handlePressNext={handlePressNext} user={user} password={password}/>;
+
+  const acceptModal = () => {
+    setInvalidModal({
+      ...invalidModal,
+      isModalVisible: false,
+    });
+  };
+  return (
+    <LoginComponent
+      handlePressNext={handlePressNext}
+      user={user}
+      password={password}
+      setUser={setUser}
+      setPassword={setPassword}
+      invalidModal={invalidModal}
+      acceptModal={acceptModal}
+    />
+  );
 };
 
 export default LoginScreen;
