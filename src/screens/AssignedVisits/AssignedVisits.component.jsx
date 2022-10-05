@@ -10,7 +10,14 @@ const AssignedVisitsComponent = (props) => {
 
   const renderItem = (item) => {
     return (
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity
+        style={{
+          backgroundColor: "white",
+          margin: 5,
+          flex: 1,
+          justifyContent: "center",
+          borderRadius: 10,
+        }}>
         <View>
           <Text>{item.Cliente}</Text>
           <Text>{item.id}</Text>
