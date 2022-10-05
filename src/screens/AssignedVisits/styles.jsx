@@ -22,26 +22,26 @@ const styles = StyleSheet.create({
     height: 30,
     borderWidth: 2,
     borderRadius: 3,
-    borderColor: '#172C5D',
+    borderColor: "#172C5D",
     padding: 10,
     marginBottom: 30,
   },
   center: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   titulo: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 18,
     marginBottom: 30,
     fontSize: 27,
-    color: '#E37427',
+    color: "#E37427",
   },
   // Seccion Filtros
   left: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   iconrefresh: {
     fontSize: 20,
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   busquedaContaienr: {
-    flexDirection: 'row',
-    borderColor: '#000',
+    flexDirection: "row",
+    borderColor: "#000",
     paddingBottom: 10,
   },
   icon: {
@@ -68,15 +68,15 @@ const styles = StyleSheet.create({
     height: 38,
     borderWidth: 1,
     borderRadius: 40,
-    borderColor: '#fff',
-    backgroundColor: '#fff',
+    borderColor: "#fff",
+    backgroundColor: "#fff",
     padding: 10,
     marginBottom: 30,
     flex: 1,
   },
   // Card
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     padding: 10,
     marginBottom: 20,
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   titulocard: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 8,
     fontSize: 15,
     marginLeft: 5,
     marginBottom: 3,
-    color: '#E37427',
+    color: "#E37427",
   },
   textcard: {
     fontSize: 12,
@@ -102,13 +102,23 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   textfecha: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 12,
     marginLeft: 5,
     marginBottom: 3,
-    color: '#172C5D', 
+    color: "#172C5D",
   },
-//  MODAL
+  container: {
+    flex: 1,
+  },
+  item: {
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+  },
+  //  MODAL
 });
 
 export default styles;

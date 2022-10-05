@@ -6,15 +6,29 @@ import AssignedVisitsComponent from "./AssignedVisits.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AssignedVisitsScreen = (props) => {
-  const [lista, setLista] = useState([]);
+  const [lista, setLista] = useState();
   useEffect(() => {
     fetchList();
   }, []);
+  useEffect(() => {
+    console.log("lista Completa", lista);
+  }, [lista]);
 
   const fetchList = async () => {
     const id = await AsyncStorage.getItem("@id");
-    setLista(await visitList(id));
-    console.log("lista", lista[0]);
+    const resLista = await visitList(id);
+    const listaLimpia = resLista.filter(
+      (element) => element["Fecha tentativa de la visita:"] != null
+    );
+    let listaCalendar = {};
+    listaLimpia.forEach((element) => {
+      const fecha = element["Fecha tentativa de la visita:"];
+      const id = element["Visita #:"];
+      const Cliente = element["Cliente:"];
+      listaCalendar[fecha] = [{ id: id, Cliente: Cliente }];
+    });
+
+    setLista(listaCalendar);
   };
 
   return <AssignedVisitsComponent lista={lista} />;
