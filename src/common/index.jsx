@@ -1,8 +1,9 @@
 const Constants = {
   screens: {
     Login: "Login",
-    Home: "home",
-    AssignedVisits: "assignedvisits",
+    Home: "Home",
+    AssignedVisits: "AssignedVisits",
+    VisitForm: "VisitForm",
   },
   language: {
     generic: {

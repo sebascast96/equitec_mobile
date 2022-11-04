@@ -4,8 +4,11 @@ import styles from "./styles";
 import { visitList } from "../../client";
 import AssignedVisitsComponent from "./AssignedVisits.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { Constants } from "../../common";
 
 const AssignedVisitsScreen = (props) => {
+  const navigation = useNavigation();
   const [lista, setLista] = useState();
   useEffect(() => {
     fetchList();
@@ -32,7 +35,11 @@ const AssignedVisitsScreen = (props) => {
     setLista(listaCalendar);
   };
 
-  return <AssignedVisitsComponent lista={lista} />;
+  const onPressVisit = (visitId) => {
+    navigation.navigate(Constants.screens.VisitForm, { visitId: visitId });
+  };
+
+  return <AssignedVisitsComponent lista={lista} onPressVisit={onPressVisit} />;
 };
 
 export default AssignedVisitsScreen;

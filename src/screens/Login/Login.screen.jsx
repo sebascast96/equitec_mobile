@@ -18,15 +18,19 @@ const LoginScreen = (props) => {
 
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
   const [invalidModal, setInvalidModal] = useState(
     invalidCredentialsModalIntialState
   );
 
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   const handlePressNext = async () => {
     if (user == "" || password == "") {
       Alert.alert(Error, "Faltan datos");
     } else {
+      setShowSpinner(true);
       const res = await login(user, password);
+      setShowSpinner(false);
       if (res == "") {
         setInvalidModal({
           ...invalidModal,
@@ -37,7 +41,7 @@ const LoginScreen = (props) => {
         await AsyncStorage.setItem("@id", "" + res[0].id);
         await AsyncStorage.setItem("@username", res[0].username);
         await AsyncStorage.setItem("@email", res[0].email);
-        navigation.navigate(Constants.screens.Home);
+        navigation.push(Constants.screens.Home);
       }
     }
   };
@@ -57,6 +61,7 @@ const LoginScreen = (props) => {
       setPassword={setPassword}
       invalidModal={invalidModal}
       acceptModal={acceptModal}
+      showSpinner={showSpinner}
     />
   );
 };

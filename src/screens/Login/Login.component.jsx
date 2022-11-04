@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import { Constants } from "../../common";
 import { Ionicons } from "@expo/vector-icons";
 import AlertComponent from "../../components/Alerts";
+import LoadingSpinner from "../../components/Spinner/Spinner.component";
 
 const LoginComponent = (props) => {
   const {
@@ -16,6 +17,7 @@ const LoginComponent = (props) => {
     setPassword,
     invalidModal,
     acceptModal,
+    showSpinner,
   } = props;
   return (
     <SafeAreaProvider>
@@ -23,6 +25,8 @@ const LoginComponent = (props) => {
         modalParams={invalidModal}
         handlePressPrimary={acceptModal}
       />
+
+      <LoadingSpinner showSpinner={showSpinner} animation={"none"} />
       <View style={styles.loginScreen}>
         <View style={styles.loginContainer}>
           <View style={styles.center}>
@@ -41,6 +45,8 @@ const LoginComponent = (props) => {
             autoCorrect={false}
             placeholder="Username"
             value={user}
+            autoCapitalize={"none"}
+            keyboardType={"email-address"}
             onChangeText={(text) => {
               setUser(text);
             }}
@@ -49,10 +55,8 @@ const LoginComponent = (props) => {
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.inputStyle}
-              autoCorrect={false}
-              secureTextEntry
+              secureTextEntry={true}
               value={password}
-              keyboardType="email-address"
               onChangeText={(text) => {
                 setPassword(text);
               }}

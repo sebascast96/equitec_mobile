@@ -1,27 +1,25 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Constants } from "../common";
+import { Constants } from "../../common";
 
-import LoginScreen from "../screens/Login";
-import HomeScreen from "../screens/Home";
-import VisitForm from "../screens/VisitForm";
-import AssignedVisits from "../screens/AssignedVisits";
+import VisitForm from "../../screens/VisitForm";
+import AssignedVisits from "../../screens/AssignedVisits";
 
 const Stack = createNativeStackNavigator();
 
-const Router = () => {
+const HomeRouter = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
-          name={Constants.screens.Login}
-          component={LoginScreen}
+          name={Constants.screens.AssignedVisits}
+          component={AssignedVisits}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={Constants.screens.Home}
-          component={HomeScreen}
+          name={Constants.screens.VisitForm}
+          component={VisitForm}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
@@ -29,4 +27,4 @@ const Router = () => {
   );
 };
 
-export default Router;
+export default HomeRouter;
