@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default } from \"./Alerts\";","map":{"version":3,"names":["default"],"sources":["C:/laragon/www/equitec_mobile/src/components/Alerts/index.jsx"],"sourcesContent":["export {default} from './Alerts';\r\n"],"mappings":"AAAA,SAAQA,OAAR"},"metadata":{},"sourceType":"module"}

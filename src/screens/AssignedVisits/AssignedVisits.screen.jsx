@@ -25,7 +25,8 @@ const AssignedVisitsScreen = (props) => {
       const fecha = element["Fecha tentativa de la visita:"];
       const id = element["Visita #:"];
       const Cliente = element["Cliente:"];
-      listaCalendar[fecha] = [{ id: id, Cliente: Cliente, fecha: fecha }];
+      const Concepto = element["Concepto:"];
+      listaCalendar[fecha] = [{ id: id, Cliente: Cliente, fecha: fecha, Concepto: Concepto }];
     });
 
     setLista(listaCalendar);
