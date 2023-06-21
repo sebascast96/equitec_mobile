@@ -6,6 +6,7 @@ import AssignedVisitsComponent from "./AssignedVisits.component";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Constants } from "../../common";
+import moment from 'moment';
 
 const AssignedVisitsScreen = (props) => {
   const navigation = useNavigation();
@@ -13,25 +14,26 @@ const AssignedVisitsScreen = (props) => {
   useEffect(() => {
     fetchList();
   }, []);
-  useEffect(() => {
-    console.log("lista Completa", lista);
-  }, [lista]);
+  // useEffect(() => {
+  //   console.log("lista Completa", lista);
+  // }, [lista]);
 
   const fetchList = async () => {
-    const id = await AsyncStorage.getItem("@id");
-    const resLista = await visitList(id);
-    const listaLimpia = resLista.filter(
-      (element) => element["Fecha tentativa de la visita:"] != null
-    );
+    const resLista = await visitList();
+     console.log("Lista resul",resLista.data);
     let listaCalendar = {};
-    listaLimpia.forEach((element) => {
-      const fecha = element["Fecha tentativa de la visita:"];
-      const id = element["Visita #:"];
-      const Cliente = element["Cliente:"];
-      const Concepto = element["Concepto:"];
-      listaCalendar[fecha] = [{ id: id, Cliente: Cliente, fecha: fecha, Concepto: Concepto }];
+    resLista.data.forEach((element) => {
+      const fecha = moment(element.start,moment.ISO_8601).format("YYYY-MM-DD");
+      listaCalendar[fecha] = [];
     });
-
+    resLista.data.forEach((element)=>{
+      const fecha = moment(element.start,moment.ISO_8601).format("YYYY-MM-DD");
+      const id = element.id;
+      const Cliente = element.title;
+      const Concepto = element.detail;
+      listaCalendar[fecha].push({ id: id, Cliente: Cliente, fecha: fecha, Concepto: Concepto });
+    })
+    console.log("lista calendar",listaCalendar);
     setLista(listaCalendar);
   };
 

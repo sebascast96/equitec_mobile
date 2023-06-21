@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default } from \"./typography\";","map":{"version":3,"names":["default"],"sources":["/Users/macintosh/Documents/Proyectos/equitec_mobile/src/components/Typography/index.jsx"],"sourcesContent":["export {default} from './typography';\n"],"mappings":"AAAA,SAAQA,OAAR"},"metadata":{},"sourceType":"module"}

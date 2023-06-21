@@ -31,16 +31,13 @@ const LoginScreen = (props) => {
       setShowSpinner(true);
       const res = await login(user, password);
       setShowSpinner(false);
-      if (res == "") {
+      if (res.status == 401) {
         setInvalidModal({
           ...invalidModal,
           isModalVisible: true,
         });
-      } else {
-        console.log("id", res[0].id);
-        await AsyncStorage.setItem("@id", "" + res[0].id);
-        await AsyncStorage.setItem("@username", res[0].username);
-        await AsyncStorage.setItem("@email", res[0].email);
+      } else if (res.status==200){
+        AsyncStorage.setItem("token",res.data.token);
         navigation.push(Constants.screens.Home);
       }
     }

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default } from \"./AssignedVisits.screen\";","map":{"version":3,"names":["default"],"sources":["/Users/macintosh/Documents/Proyectos/equitec_mobile/src/screens/AssignedVisits/index.jsx"],"sourcesContent":["export { default } from \"./AssignedVisits.screen\";\n"],"mappings":"AAAA,SAASA,OAAT"},"metadata":{},"sourceType":"module"}
