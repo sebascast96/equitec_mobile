@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto',
       },
+ titulo: {
+  fontWeight: 'bold',
+  marginTop: 18,
+  marginBottom: 30,
+  fontSize: 27,
+  color: '#E37427',
+ },
 });
 
 export default styles;

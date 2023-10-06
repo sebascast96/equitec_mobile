@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
- visitformScreen: {
+ visitdetailsScreen: {
   width: '85%',
   height: '90%',
   marginTop: 35,
@@ -10,21 +10,13 @@ const styles = StyleSheet.create({
   display: 'flex',
   flex: 1,
  },
- visitformContainer: {
+ visitdetailsContainer: {
   width: '100%',
   display: 'flex',
   flex: 1,
   height: '100%',
   marginLeft: 'auto',
   marginRight: 'auto',
- },
-
- titulo: {
-  fontWeight: 'bold',
-  marginTop: 18,
-  marginBottom: 30,
-  fontSize: 27,
-  color: '#E37427',
  },
 });
 

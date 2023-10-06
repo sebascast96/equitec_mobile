@@ -1,17 +1,18 @@
-import React from "react";
-import ButtonComponent from "./Button.component";
+import React from 'react';
+import ButtonComponent from './Button.component';
 
 const ButtonScreen = (props) => {
-	const { buttonText, handlePress, disabled, customStyle } = props;
+ const { buttonText, textStyle, handlePress, disabled, customStyle } = props;
 
-	return (
-		<ButtonComponent
-			buttonText={buttonText}
-			handlePress={handlePress}
-			disabled={disabled}
-			customStyle={customStyle}
-		/>
-	);
+ return (
+  <ButtonComponent
+   buttonText={buttonText}
+   handlePress={handlePress}
+   disabled={disabled}
+   customStyle={customStyle}
+   textStyle={textStyle}
+  />
+ );
 };
 
 export default ButtonScreen;
