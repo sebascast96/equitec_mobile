@@ -51,7 +51,6 @@ const AssignedVisitsScreen = (props) => {
  };
 
  const onPressVisit = (visit) => {
-  console.log(visit);
   navigation.navigate(Constants.screens.VisitInfo, { visit: visit });
  };
 
