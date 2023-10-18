@@ -4,10 +4,10 @@
     "slug": "EquitecApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/img/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/img/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/img/logo.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.monologicsolutions.EquitecApp"
@@ -34,6 +34,14 @@
       "eas": {
         "projectId": "8e313d9e-f3cb-41a7-a13a-8ebaf0c75e72"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }
