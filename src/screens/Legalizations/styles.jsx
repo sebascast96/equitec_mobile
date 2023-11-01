@@ -3,7 +3,7 @@ import { Theme } from "../../common";
 
 const styles = StyleSheet.create({
     legalizationsScreen: {
-        width: '85%',
+        width: '95%',
         height: '90%',
         marginTop: 35,
         marginLeft: 'auto',
@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
 head: { height: 40, backgroundColor: Theme.colors.mainOrange, textAlign:'center' },
 textTable:{
   color:'white',
+  alignSelf:'center'
+},
+text:{
+  color:'black',
   alignSelf:'center'
 }
 });

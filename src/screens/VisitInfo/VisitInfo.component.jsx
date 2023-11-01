@@ -74,6 +74,7 @@ const VisitInfoComponent = (props) => {
         <Button
          customStyle={styles.bottomButton}
          handlePress={handlePressDetalle}
+         disabled={true}
          buttonText='Ver detalle'
         />
         <Button

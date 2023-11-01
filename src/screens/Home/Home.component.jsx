@@ -6,17 +6,22 @@ import {
 } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
-import AssignedVisits from "../AssignedVisits";
 import HomeRouter from "../../navigation/Tabs/HomeTab";
-import SavedReports from "../SavedReports";
-import Legalizations from "../Legalizations";
-import { Theme } from "../../common";
+import { Constants, Theme } from "../../common";
 import LinearGradient from "react-native-linear-gradient";
 import { Image, View } from "react-native";
 import styles from "./styles";
-const Menu = createDrawerNavigator();
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import LegalizationRouter from "../../navigation/Tabs/LegalizationRouter";
 
+const Menu = createDrawerNavigator();
+async function logout(navigation) {
+  AsyncStorage.removeItem('token');
+   navigation.navigate(Constants.screens.Login);
+}
 function CustomDrawerContent(props) {
+  const navigation = useNavigation();
   return (
     <DrawerContentScrollView
       {...props}
@@ -38,7 +43,7 @@ function CustomDrawerContent(props) {
           borderTopWidth: 1,
           borderRadius: 0,
         }}
-        onPress={() => Linking.openURL("https://mywebsite.com/help")}
+        onPress={() => logout(navigation)}
       />
     </DrawerContentScrollView>
   );
@@ -46,7 +51,6 @@ function CustomDrawerContent(props) {
 
 const HomeComponent = (props) => {
   return (
-    <NavigationContainer independent={true}>
       <Menu.Navigator
         drawerContent={CustomDrawerContent}
         screenOptions={{
@@ -58,21 +62,15 @@ const HomeComponent = (props) => {
             borderTopWidth: 1,
             borderRadius: 0,
           },
-          drawerContentContainerStyle: { backgroundColor: "pink" },
         }}
       >
         <Menu.Screen
           name="Visitas por realizar"
           options={{
             headerTitle: "",
-            headerBackground: (props) => (
-              <LinearGradient
-                colors={[Theme.colors.navbarOrange, "#ffffff"]}
-                style={{ flex: 1 }}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              />
-            ),
+            headerStyle: {
+              backgroundColor: Theme.colors.navbarOrange,
+            },
             headerRight: (props) => (
               <Image
                 style={styles.tinyLogo}
@@ -87,14 +85,9 @@ const HomeComponent = (props) => {
           name="Legalizaciones"
           options={{
             headerTitle: "",
-            headerBackground: (props) => (
-              <LinearGradient
-                colors={[Theme.colors.navbarOrange, "#ffffff"]}
-                style={{ flex: 1 }}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              />
-            ),
+            headerStyle: {
+              backgroundColor: Theme.colors.navbarOrange,
+            },
             headerRight: (props) => (
               <Image
                 style={styles.tinyLogo}
@@ -102,10 +95,9 @@ const HomeComponent = (props) => {
               />
             ),
           }}
-          component={Legalizations}
+          component={LegalizationRouter}
         />
       </Menu.Navigator>
-    </NavigationContainer>
   );
 };
 

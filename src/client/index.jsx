@@ -36,6 +36,17 @@ const legalizationList = async () => {
   return fetchResponse(url, config);
 };
 
+const legalizationDetail = async (id) => {
+  let url = URL + "legalizations/"+id;
+  let token = await AsyncStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  return fetchResponse(url, config);
+};
+
 
 const fetchResponse = async (url, config) => {
   try {
@@ -88,4 +99,4 @@ const fetchResponsePost = async (url, data, config) => {
   }
 };
 
-export { login, visitList, legalizationList };
+export { login, visitList, legalizationList, legalizationDetail };

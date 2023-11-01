@@ -8,6 +8,7 @@ import AssignedVisits from '../../screens/AssignedVisits';
 import LegalizeForm from '../../screens/LegalizeForm';
 import VisitDetails from '../../screens/VisitDetails';
 import VisitInfo from '../../screens/VisitInfo';
+import LegalizationView from '../../screens/LegalizationView'
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,11 @@ const HomeRouter = () => {
     <Stack.Screen
      name={Constants.screens.VisitInfo}
      component={VisitInfo}
+     options={{ headerShown: false }}
+    />
+    <Stack.Screen
+     name={Constants.screens.LegalizationView}
+     component={LegalizationView}
      options={{ headerShown: false }}
     />
    </Stack.Navigator>

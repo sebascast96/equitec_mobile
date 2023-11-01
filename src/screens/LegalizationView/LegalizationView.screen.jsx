@@ -1,18 +1,23 @@
 import React, { useState, useCallback, useEffect } from "react";
-import LegalizeFormComponent from "./LegalizeForm.component";
+import LegalizationViewComponent from "./LegalizationView.component";
 import * as DocumentPicker from "expo-document-picker";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Constants } from "../../common";
+import { legalizationDetail } from "../../client";
+import * as mime from 'react-native-mime-types';
 import * as ImagePicker from 'expo-image-picker';
+
+
 const serverCallModalIntialState = {
   title: Constants.language.generic.sorry,
   primaryButtonLabel: Constants.language.generic.accept,
   isModalVisible: false,
  };
-const LegalizeFormScreen = (props) => {
+
+const LegalizationViewScreen = props => {
   const navigation = useNavigation();
-  const [showSpinner, setShowSpinner] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   const [invalidModal, setInvalidModal] = useState(
     serverCallModalIntialState
    );
@@ -65,6 +70,10 @@ const LegalizeFormScreen = (props) => {
   const [valueACPM, setValueACPM] = useState("");
   const [thirdService, setThirdService] = useState("");
   const [result, setResult] = useState("");
+  const [client, setClient] = useState("");
+  const [workOrder, setWorkOrder] = useState("");
+  const [event, setEvent] = useState("");
+  const [name, setName] = useState("");
   const [result2, setResult2] = useState(null);
   const [tableHead, setTableHead] = useState([
     "Nombre",
@@ -75,20 +84,23 @@ const LegalizeFormScreen = (props) => {
   const [tableData, setTableData] = useState([
     ["0", "0", "0", "0"],
   ]);
+  const [disabled, setDisabled]=useState(true);
+
+  const [visit, setVisit]=useState(true);
   //CAMERA
   const[camImage, setCamImage]=useState(null);
-  const { visit } = props.route.params;
+    const { data } = props.route.params;
 
   const legalize = async (info) => {
-    let url = "http://equitec-mobile-app-v2-8e504453cc53.herokuapp.com/api/v1/legalizations";
+    let url = "http://equitec-mobile-app-v2-8e504453cc53.herokuapp.com/api/v1/legalizations/"+visit.id;
     try {
       let xhr = new XMLHttpRequest();
-    xhr.open('POST', url);
+    xhr.open('PUT', url);
     let token = await AsyncStorage.getItem("token");
     xhr.setRequestHeader("Authorization", token);
     xhr.onreadystatechange = () => {
       if (xhr.readyState == XMLHttpRequest.DONE) {
-        if(xhr.status==201){
+        if(xhr.status==200){
           setValidModal({
             ...validModal,
             title:"EXITO",
@@ -114,6 +126,7 @@ const LegalizeFormScreen = (props) => {
       console.log(error)
     }
   };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchCameraAsync({
@@ -159,24 +172,74 @@ const LegalizeFormScreen = (props) => {
     }
   }, []);
 
+  useEffect(()=>{
+    fetchData();
+  },[]);
+
+  const fetchData = async () => {
+    const res = await legalizationDetail(data[4]);
+    setVisit(res.data);
+    if(res.data.state=='created'){
+      setDisabled(false);
+    }
+    setResult2({name:res.data.bill_file.url.split('/')[7].split('?')[0],uri:res.data.bill_file.url,mimeType:mime.lookup(res.data.bill_file.url.split('/')[7].split('?')[0].split('.')[1])})
+    setResult(res.data.bill_file.url.split('/')[7].split('?')[0]);
+    setValueTipo(res.data.legalization_type);
+    setValueAfter(res.data.after_taxes_total+"");
+    setValueBefore(res.data.before_taxes_total+"");
+    setValuePay(res.data.payment_method);
+    setClient(res.data.event.title);
+    setWorkOrder(res.data.work_order.assigned_uuid);
+    setEvent(res.data.event.detail)
+    setName(res.data.user.username + " " + res.data.user.first_surname);
+    if(res.data.legalization_type=='Logistico'){
+      setValueLogistic(res.data.logistic_fee_basis);
+      if(res.data.logistic_fee_basis=='Transporte'){
+        setValueTransport(res.data.transport_type);
+        setComment(res.data.comment);
+      }
+      else if (res.data.logistic_fee_basis == 'Otro') {
+        setOtherConcept(res.data.other_logistic_fee_basis);
+      }
+    }
+    else{
+      setValueBuy(res.data.purchase_fee_basis)
+      if(res.data.purchase_fee_basis=='ACPM'){
+        setValueACPM(res.data.acpm_amount+'');
+      }
+      if(res.data.purchase_fee_basis=='Servicio Tercerizado'){
+        setThirdService(res.data.outsourced_service);
+      }
+      if(res.data.purchase_fee_basis=='Insumo'){
+        supplies = res.data.legalized_supplies;
+        let datas=[]
+        supplies.filter(function (d, i) {
+          datas.push([d.supply,d.amount+"",d.unitary_value+"",'4'])
+        })
+        setTableData(datas);
+      }
+    }
+    
+    setShowSpinner(false);
+  }
+
   useEffect(() => {
     setValueLogistic(null);
     setValueBuy(null);
-    setTableData([
-      ["0", "0", "0", "0"],
-    ])
+    // setTableData([
+    //   ["0", "0", "0", "0"],
+    // ])
   }, [valueTipo]);
   useEffect(() => {
-    setTableData([
-      ["0", "0", "0", "0"],
-    ])
+    // setTableData([
+    //   ["0", "0", "0", "0"],
+    // ])
   }, [valueLogistic,valueBuy]);
 
   function handlePressBack() {
     navigation.goBack();
   }
   const handlePressSave = async () => {
-    setShowSpinner(true);
     const formData = new FormData();
     if (camImage==null) {
       formData.append("legalization[bill_file]", {
@@ -192,17 +255,17 @@ const LegalizeFormScreen = (props) => {
         type: 'image/jpeg',
       });
     }
-    formData.append("legalization[customer_id]", visit.visit.customer_id);
+     formData.append("legalization[customer_id]", visit.customer.id);
     formData.append(
       "legalization[work_order_uuid]",
-      visit.visit.work_order_uuid
+      visit.work_order.uuid
     );
-    formData.append("legalization[event_id]", visit.id);
+     formData.append("legalization[event_id]", visit.event.id);
     formData.append("legalization[before_taxes_total]", valueBefore);
     formData.append("legalization[after_taxes_total]", valueAfter);
     formData.append("legalization[payment_method]", valuePay);
     formData.append("legalization[legalization_type]", valueTipo);
-    formData.append("legalization[user_id]", visit.visit.technicians[0].id);
+     formData.append("legalization[user_id]", visit.user.id);
     if (valueTipo == 'Logistico') {
       formData.append("legalization[logistic_fee_basis]", valueLogistic);
     } else if (valueTipo == 'Compra') {
@@ -231,10 +294,8 @@ const LegalizeFormScreen = (props) => {
         amount.push(d[1]);
         unitary_value.push(d[2]);
       });
-      // formData.append("legalized_supply[supply][]", supply);
-      // formData.append("legalized_supply[amount][]", amount);
-      // formData.append("legalized_supply[unitary_value][]", unitary_value);
     }
+    setShowSpinner(true);
     const res = await legalize(formData);
   };
 
@@ -243,7 +304,7 @@ const LegalizeFormScreen = (props) => {
   }
 
   function addRow() {
-    setTableData([...tableData, [0, 0, 0, 0]]);
+    setTableData([...tableData, ["", "", "", ""]]);
   }
 
   function onChangeTextTable(index, text, cellIndex) {
@@ -252,7 +313,7 @@ const LegalizeFormScreen = (props) => {
     setTableData(newArray);
   }
   return (
-    <LegalizeFormComponent
+    <LegalizationViewComponent
       //Legalization type dropdown
       openTipo={openTipo}
       valueTipo={valueTipo}
@@ -320,13 +381,18 @@ const LegalizeFormScreen = (props) => {
       //Camera
       pickImage={pickImage}
       //Extras
+      client={client}
+      workOrder={workOrder}
+      event={event}
+      name={name}
       acceptModal={acceptModal}
       invalidModal={invalidModal}
       validModal={validModal}
       acceptModalBack={acceptModalBack}
       showSpinner={showSpinner}
+      disabled={disabled}
     />
   );
 };
 
-export default LegalizeFormScreen;
+export default LegalizationViewScreen;

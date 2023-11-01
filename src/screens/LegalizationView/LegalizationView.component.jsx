@@ -12,7 +12,7 @@ import LoadingSpinner from "../../components/Spinner/Spinner.component";
 import { Table, Row, TableWrapper, Cell } from "react-native-table-component";
 import AlertsComponent from "../../components/Alerts/Alerts";
 
-const LegalizeFormComponent = (props) => {
+const LegalizationViewComponent = (props) => {
   const {
     //Legalization type dropdown
     openTipo,
@@ -81,21 +81,30 @@ const LegalizeFormComponent = (props) => {
     acceptModal,
     validModal,
     acceptModalBack,
-    pickImage
+    disabled,
+    client,
+    workOrder,
+    event,
+    name,
+    pickImage,
   } = props;
+
   const element = (data, index) => (
-    <Pressable onPress={()=>removeRow(index)} style={{alignItems:'center'}}>
-      <Ionicons
-        name={"trash"}
-        color={"red"}
-        size={40}
-      />
+    <Pressable
+      onPress={() => removeRow(index)}
+      style={{ alignItems: "center" }}
+      disabled={disabled}
+    >
+      <Ionicons name={"trash"} color={"red"} size={40} />
     </Pressable>
   );
 
   const element2 = (data, index, cellIndex) => (
     <TextInput
       style={styles.inputStyleTable}
+      placeholderTextColor={"black"}
+      editable={!disabled}
+      placeholder={data}
       keyboardType={cellIndex == 0 ? "default" : "number-pad"}
       onChangeText={(text) => onChangeTextTable(index, text, cellIndex)}
     />
@@ -103,25 +112,47 @@ const LegalizeFormComponent = (props) => {
 
   return (
     <SafeAreaProvider>
-   <AlertsComponent
-    modalParams={invalidModal}
-    handlePressPrimary={acceptModal}
-   />
-   <AlertsComponent
-    modalParams={validModal}
-    handlePressPrimary={acceptModalBack}
-   />
-        <LoadingSpinner showSpinner={showSpinner} animation={"none"} />
-        <View style={styles.legalizeformScreen}>
-          <View style={styles.legalizeformContainer}>
-            
-      <ScrollView nestedScrollEnabled={true}>
+      <AlertsComponent
+        modalParams={invalidModal}
+        handlePressPrimary={acceptModal}
+      />
+      <AlertsComponent
+        modalParams={validModal}
+        handlePressPrimary={acceptModalBack}
+      />
+      <LoadingSpinner showSpinner={showSpinner} animation={"none"} />
+      <View style={styles.legalizationviewScreen}>
+        <View style={styles.legalizationviewContainer}>
+          <ScrollView nestedScrollEnabled={true}>
             <View style={styles.paragraphSize}>
-              
               <Typography
                 type={"h5"}
                 style={styles.titulo}
-                text={"Realizar legalización"}
+                text={"Información legalización"}
+              />
+              <Typography type={"h5"} text={"Cliente Y Sedes"} />
+              <TextInput
+                style={styles.inputStyle}
+                value={client}
+                editable={false}
+              />
+              <Typography type={"h5"} text={"Orden De Trabajo"} />
+              <TextInput
+                style={styles.inputStyle}
+                value={workOrder}
+                editable={false}
+              />
+              <Typography type={"h5"} text={"Evento"} />
+              <TextInput
+                style={styles.inputStyle}
+                value={event}
+                editable={false}
+              />
+              <Typography type={"h5"} text={"Técnico"} />
+              <TextInput
+                style={styles.inputStyle}
+                value={name}
+                editable={false}
               />
               <Typography type={"h5"} text={"Tipo de legalización"} />
               <DropDownPicker
@@ -131,6 +162,7 @@ const LegalizeFormComponent = (props) => {
                   color: "grey",
                   fontWeight: "bold",
                 }}
+                disabled={disabled}
                 containerStyle={{}}
                 style={{
                   height: 45,
@@ -164,8 +196,11 @@ const LegalizeFormComponent = (props) => {
                     color={Theme.colors.mainOrange}
                     size={40}
                   />
-                  </Pressable>
-                <Pressable onPress={handleDocumentSelection}>
+                </Pressable>
+                <Pressable
+                  onPress={handleDocumentSelection}
+                  disabled={disabled}
+                >
                   <Ionicons
                     name={"cloud-upload"}
                     color={Theme.colors.mainOrange}
@@ -181,6 +216,7 @@ const LegalizeFormComponent = (props) => {
                   color: "grey",
                   fontWeight: "bold",
                 }}
+                disabled={disabled}
                 containerStyle={{}}
                 style={{
                   height: 45,
@@ -205,6 +241,7 @@ const LegalizeFormComponent = (props) => {
                 autoCorrect={false}
                 placeholder="Valor antes de impuestos"
                 value={valueBefore}
+                editable={!disabled}
                 autoCapitalize={"none"}
                 keyboardType={"number-pad"}
                 onChangeText={(text) => {
@@ -218,6 +255,7 @@ const LegalizeFormComponent = (props) => {
               <TextInput
                 style={styles.inputStyle}
                 autoCorrect={false}
+                editable={!disabled}
                 placeholder="Valor antes de impuestos"
                 value={valueAfter}
                 autoCapitalize={"none"}
@@ -227,7 +265,7 @@ const LegalizeFormComponent = (props) => {
                 }}
               />
               {valueTipo != null ? (
-                valueTipo == 'Logistico' ? (
+                valueTipo == "Logistico" ? (
                   <View>
                     <Typography type={"h5"} text={"Logistico"} />
                     <DropDownPicker
@@ -237,13 +275,17 @@ const LegalizeFormComponent = (props) => {
                         color: "grey",
                         fontWeight: "bold",
                       }}
+                      disabled={disabled}
                       containerStyle={{}}
-                      style={{
-                        height: 45,
-                        marginBottom: 15,
-                        borderRadius: 50,
-                        borderWidth: 0,
-                      }}
+                      style={[
+                        {
+                          height: 45,
+                          marginBottom: 15,
+                          borderRadius: 50,
+                          borderWidth: 0,
+                        },
+                        openLogistic ? { zIndex: 50 } : { zIndex: 1 },
+                      ]}
                       open={openLogistic}
                       value={valueLogistic}
                       items={itemsLogistic}
@@ -269,6 +311,7 @@ const LegalizeFormComponent = (props) => {
                         borderRadius: 50,
                         borderWidth: 0,
                       }}
+                      disabled={disabled}
                       open={openBuy}
                       value={valueBuy}
                       items={itemsBuy}
@@ -280,7 +323,7 @@ const LegalizeFormComponent = (props) => {
                 )
               ) : null}
 
-              {valueLogistic == 'Transporte' ? (
+              {valueLogistic == "Transporte" ? (
                 <View>
                   <Typography type={"h5"} text={"Tipo de transporte"} />
                   <DropDownPicker
@@ -291,12 +334,17 @@ const LegalizeFormComponent = (props) => {
                       fontWeight: "bold",
                     }}
                     containerStyle={{}}
-                    style={{
-                      height: 45,
-                      marginBottom: 15,
-                      borderRadius: 50,
-                      borderWidth: 0,
-                    }}
+                    style={[
+                      {
+                        height: 45,
+                        marginBottom: 15,
+                        borderRadius: 50,
+                        borderWidth: 0,
+                      },
+                      ,
+                      openLogistic ? { zIndex: 50 } : { zIndex: 1 },
+                    ]}
+                    disabled={disabled}
                     open={openTransport}
                     value={valueTransport}
                     items={itemsTransport}
@@ -311,6 +359,7 @@ const LegalizeFormComponent = (props) => {
                     autoCorrect={false}
                     placeholder="Origen, destino y justificación"
                     value={comment}
+                    editable={!disabled}
                     autoCapitalize={"none"}
                     keyboardType={"default"}
                     onChangeText={(text) => {
@@ -320,7 +369,7 @@ const LegalizeFormComponent = (props) => {
                 </View>
               ) : null}
 
-              {valueLogistic == 'Otro' ? (
+              {valueLogistic == "Otro" ? (
                 <View>
                   <Typography type={"h5"} text={"Concepto"} />
                   <TextInput
@@ -329,6 +378,7 @@ const LegalizeFormComponent = (props) => {
                     placeholder="Concepto"
                     value={otherConcept}
                     autoCapitalize={"none"}
+                    editable={!disabled}
                     keyboardType={"default"}
                     onChangeText={(text) => {
                       setOtherConcept(text);
@@ -337,7 +387,7 @@ const LegalizeFormComponent = (props) => {
                 </View>
               ) : null}
 
-              {valueBuy == 'Insumo' ? (
+              {valueBuy == "Insumo" ? (
                 <View>
                   <Table
                     borderStyle={{ borderWidth: 2, borderColor: "#D8D8D8" }}
@@ -371,17 +421,19 @@ const LegalizeFormComponent = (props) => {
                       marginTop: 5,
                       backgroundColor: "green",
                     }}
+                    disabled={disabled}
                   />
                 </View>
               ) : null}
 
-              {valueBuy == 'ACPM' ? (
+              {valueBuy == "ACPM" ? (
                 <View>
                   <Typography type={"h5"} text={"ACPM"} />
                   <TextInput
                     style={styles.inputStyle}
                     autoCorrect={false}
                     placeholder="Acpm"
+                    editable={!disabled}
                     value={valueACPM}
                     autoCapitalize={"none"}
                     keyboardType={"number-pad"}
@@ -391,12 +443,13 @@ const LegalizeFormComponent = (props) => {
                   />
                 </View>
               ) : null}
-              {valueBuy == 'Servicio Tercerizado' ? (
+              {valueBuy == "Servicio Tercerizado" ? (
                 <View>
                   <Typography type={"h5"} text={"Concepto"} />
                   <TextInput
                     style={styles.inputStyle}
                     autoCorrect={false}
+                    editable={!disabled}
                     placeholder="Concepto"
                     value={thirdService}
                     autoCapitalize={"none"}
@@ -407,24 +460,25 @@ const LegalizeFormComponent = (props) => {
                   />
                 </View>
               ) : null}
-              </View>
-            </ScrollView>
-              <View style={styles.bottomButtons2}>
-                <Button
-                  customStyle={styles.backButton}
-                  handlePress={handlePressBack}
-                  buttonText="ATRAS"
-                />
-                <Button
-                  customStyle={styles.bottomButton}
-                  handlePress={handlePressSave}
-                  buttonText="GUARDAR"
-                />
-              </View>
             </View>
+          </ScrollView>
+          <View style={styles.bottomButtons2}>
+            <Button
+              customStyle={styles.backButton}
+              handlePress={handlePressBack}
+              buttonText="ATRAS"
+            />
+            <Button
+              customStyle={styles.bottomButton}
+              handlePress={handlePressSave}
+              buttonText="GUARDAR"
+              disabled={disabled}
+            />
           </View>
+        </View>
+      </View>
     </SafeAreaProvider>
   );
 };
 
-export default LegalizeFormComponent;
+export default LegalizationViewComponent;

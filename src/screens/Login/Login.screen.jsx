@@ -7,6 +7,8 @@ import { Constants } from '../../common';
 import { login } from '../../client/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 const invalidCredentialsModalIntialState = {
  title: Constants.language.generic.sorry,
  primaryButtonLabel: Constants.language.generic.accept,
@@ -43,6 +45,7 @@ const LoginScreen = (props) => {
     });
    } else if (res.status == 200) {
     AsyncStorage.setItem('token', res.data.token);
+    
     navigation.push(Constants.screens.Home);
    }
   }
@@ -56,6 +59,7 @@ const LoginScreen = (props) => {
  };
 
  function onPressEye() {
+  console.log(navigation.getState());
   setSecureText(!secureText);
   setIcon(icon == 'eye-off' ? 'eye' : 'eye-off');
  }

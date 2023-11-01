@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
   inputStyleUpload: {
     height: 45,
-    width: "85%",
+    width: "75%",
     borderWidth: 0,
     borderRadius: 50,
     backgroundColor: "white",
