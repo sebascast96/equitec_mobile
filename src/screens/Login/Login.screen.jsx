@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
 import styles from './styles';
 import LoginComponent from './Login.component';
@@ -26,6 +26,40 @@ const LoginScreen = (props) => {
  const [secureText, setSecureText] = useState(true);
  const [icon, setIcon] = useState('eye-off');
 
+ useEffect(() => {
+    checkLogin();
+  }, []);
+
+  async function checkLogin  () {
+    setShowSpinner(true);
+    const token = await AsyncStorage.getItem('token');
+    const legalize = await AsyncStorage.getItem("successfulLegalization");
+    if(legalize!=null){
+        setShowSpinner(false)
+        if(legalize){
+        setInvalidModal({
+            ...invalidModal,
+            title: "EXITO",
+            subtitle: "Se cargaron todas las legalizaciones",
+            isModalVisible: true,
+           });
+        }
+        else{
+        setInvalidModal({
+            ...invalidModal,
+            subtitle: "Falló la carga de legalizaciones",
+            isModalVisible: true,
+           });
+        }
+    }
+    else{
+        if (token!=null) {
+            setShowSpinner(false)
+            navigation.navigate(Constants.screens.Home);
+        }   
+        setShowSpinner(false)
+    }
+  }
  const handlePressNext = async () => {
   if (user == '' || password == '') {
    setInvalidModal({
@@ -51,15 +85,17 @@ const LoginScreen = (props) => {
   }
  };
 
- const acceptModal = () => {
+ const acceptModal = async () => {
+    await AsyncStorage.removeItem("successfulLegalization");
+    checkLogin();
   setInvalidModal({
    ...invalidModal,
    isModalVisible: false,
   });
+
  };
 
  function onPressEye() {
-  console.log(navigation.getState());
   setSecureText(!secureText);
   setIcon(icon == 'eye-off' ? 'eye' : 'eye-off');
  }

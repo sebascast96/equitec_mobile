@@ -6,24 +6,22 @@ import { Constants } from '../../common';
 import Legalizations from '../../screens/Legalizations';
 import LegalizationView from '../../screens/LegalizationView'
 
-const Stack = createNativeStackNavigator();
+const StackLegalizationTab = createNativeStackNavigator();
 
 const LegalizationRouter = () => {
  return (
-  <NavigationContainer independent={true}>
-   <Stack.Navigator>
-    <Stack.Screen
+   <StackLegalizationTab.Navigator>
+    <StackLegalizationTab.Screen
      name={Constants.screens.Legalizations}
      component={Legalizations}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackLegalizationTab.Screen
      name={Constants.screens.LegalizationView}
      component={LegalizationView}
      options={{ headerShown: false }}
     />
-   </Stack.Navigator>
-  </NavigationContainer>
+   </StackLegalizationTab.Navigator>
  );
 };
 

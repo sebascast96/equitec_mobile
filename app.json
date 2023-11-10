@@ -15,7 +15,9 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "node_modules/@expo/vector-icons/Entypo.ts",
+      "node_modules/@expo/vector-icons/Ionicons.ts"
+
     ],
     "ios": {
       "supportsTablet": true

@@ -10,44 +10,42 @@ import VisitDetails from '../../screens/VisitDetails';
 import VisitInfo from '../../screens/VisitInfo';
 import LegalizationView from '../../screens/LegalizationView'
 
-const Stack = createNativeStackNavigator();
+const StackHomeTab = createNativeStackNavigator();
 
-const HomeRouter = () => {
+const HomeRouter = (props) => {
  return (
-  <NavigationContainer independent={true}>
-   <Stack.Navigator>
-    <Stack.Screen
+   <StackHomeTab.Navigator>
+    <StackHomeTab.Screen
      name={Constants.screens.AssignedVisits}
      component={AssignedVisits}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackHomeTab.Screen
      name={Constants.screens.VisitForm}
      component={VisitForm}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackHomeTab.Screen
      name={Constants.screens.LegalizeForm}
      component={LegalizeForm}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackHomeTab.Screen
      name={Constants.screens.VisitDetails}
      component={VisitDetails}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackHomeTab.Screen
      name={Constants.screens.VisitInfo}
      component={VisitInfo}
      options={{ headerShown: false }}
     />
-    <Stack.Screen
+    <StackHomeTab.Screen
      name={Constants.screens.LegalizationView}
      component={LegalizationView}
      options={{ headerShown: false }}
     />
-   </Stack.Navigator>
-  </NavigationContainer>
+   </StackHomeTab.Navigator>
  );
 };
 

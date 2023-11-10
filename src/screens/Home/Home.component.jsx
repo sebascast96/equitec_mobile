@@ -17,7 +17,7 @@ import LegalizationRouter from "../../navigation/Tabs/LegalizationRouter";
 
 const Menu = createDrawerNavigator();
 async function logout(navigation) {
-  AsyncStorage.removeItem('token');
+ await  AsyncStorage.removeItem('token');
    navigation.navigate(Constants.screens.Login);
 }
 function CustomDrawerContent(props) {
@@ -78,6 +78,7 @@ const HomeComponent = (props) => {
               />
             ),
           }}
+          initialParams={logout}
           component={HomeRouter}
         />
 
