@@ -30,6 +30,7 @@ const AssignedVisitsScreen = (props) => {
     if(legalize!=null){
         setShowSpinner(false)
         if(legalize){
+          AsyncStorage.removeItem("successfulLegalization")
         setLegalModal({
             ...legalModal,
             title: "EXITO",
@@ -87,8 +88,8 @@ const AssignedVisitsScreen = (props) => {
 
   const fetchList = async () => {
     const resLista = await visitList();
-    console.log();
-    if (resLista.data.errors == "Signature has expired") {
+    console.log("STATUS",resLista.status);
+    if (resLista.status == 401) {
       await AsyncStorage.removeItem("token");
       setInvalidModal({
         ...invalidModal,
@@ -100,9 +101,10 @@ const AssignedVisitsScreen = (props) => {
       setInvalidModal({
         ...invalidModal,
         title: "ERROR",
-        subtitle: "Por favor intenta de nuevo mas tarde",
+        subtitle: "Por favor intenta de nuevo mas tarde, se cargaran los datos del cache",
         isModalVisible: true,
       });
+      setList();
     }
 
     let listaCalendar = {};
