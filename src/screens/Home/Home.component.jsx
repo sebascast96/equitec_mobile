@@ -9,11 +9,14 @@ import "react-native-gesture-handler";
 import HomeRouter from "../../navigation/Tabs/HomeTab";
 import { Constants, Theme } from "../../common";
 import LinearGradient from "react-native-linear-gradient";
-import { Image, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import styles from "./styles";
+// import Collapsible from 'react-native-collapsible';
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LegalizationRouter from "../../navigation/Tabs/LegalizationRouter";
+import LegalizationsRouter from "../../navigation/Tabs/LegalizationsRouter";
+import NonOpLegalizationsRouter from "../../navigation/Tabs/NonOpLegalizationsRouter";
 
 const Menu = createDrawerNavigator();
 async function logout(navigation) {
@@ -81,7 +84,9 @@ const HomeComponent = (props) => {
           initialParams={logout}
           component={HomeRouter}
         />
-
+{/* <Collapsible collapsed={isCollapsed}>
+    <View><Text>Hala</Text></View>
+  </Collapsible> */}
         <Menu.Screen
           name="Legalizaciones"
           options={{
@@ -97,6 +102,38 @@ const HomeComponent = (props) => {
             ),
           }}
           component={LegalizationRouter}
+        />
+        <Menu.Screen
+          name="Legalizar"
+          options={{
+            headerTitle: "",
+            headerStyle: {
+              backgroundColor: Theme.colors.navbarOrange,
+            },
+            headerRight: (props) => (
+              <Image
+                style={styles.tinyLogo}
+                source={require("../../img/logo.png")}
+              />
+            ),
+          }}
+          component={LegalizationsRouter}
+        />
+        <Menu.Screen
+          name="No operacional"
+          options={{
+            headerTitle: "",
+            headerStyle: {
+              backgroundColor: Theme.colors.navbarOrange,
+            },
+            headerRight: (props) => (
+              <Image
+                style={styles.tinyLogo}
+                source={require("../../img/logo.png")}
+              />
+            ),
+          }}
+          component={NonOpLegalizationsRouter}
         />
       </Menu.Navigator>
   );

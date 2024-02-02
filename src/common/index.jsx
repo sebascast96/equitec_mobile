@@ -8,7 +8,9 @@ const Constants = {
      VisitDetails: 'VisitDetails',
      VisitInfo: 'VisitInfo',
      LegalizationView:'LegalizationView',
-     Legalizations:'Legalizations'
+     Legalizations:'Legalizations',
+     OperationalLegalizations:'OperationalLegalizations',
+     NonOperationalLegalizations:'NonOperationalLegalizations'
     },
     language: {
      generic: {

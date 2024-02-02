@@ -126,6 +126,7 @@ const AssignedVisitsScreen = (props) => {
       });
     });
     await AsyncStorage.setItem("visits", JSON.stringify(listaCalendar));
+    await AsyncStorage.setItem("userID", JSON.stringify(resLista.data[0].technicians[0].id));
     setLista(listaCalendar);
   };
 

@@ -48,6 +48,30 @@ const legalizationDetail = async (id) => {
 };
 
 
+const customerList = async () => {
+  let url = URL + "legalizations/customers";
+  let token = await AsyncStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  return fetchResponse(url, config);
+};
+
+
+const authorizers = async () => {
+  let url = URL + "legalizations/authorizers";
+  let token = await AsyncStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: token,
+    },
+  };
+  return fetchResponse(url, config);
+};
+
+
 const fetchResponse = async (url, config) => {
   try {
     let request = await axios(url, config);
@@ -99,4 +123,4 @@ const fetchResponsePost = async (url, data, config) => {
   }
 };
 
-export { login, visitList, legalizationList, legalizationDetail };
+export { login, visitList, legalizationList, legalizationDetail, customerList, authorizers };

@@ -1,18 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
-import LegalizeFormComponent from "./LegalizeForm.component";
+import NonOperationalLegalizationsComponent from "./NonOperationalLegalizations.component";
 import * as DocumentPicker from "expo-document-picker";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Constants } from "../../common";
 import * as ImagePicker from "expo-image-picker";
 import NetInfo from "@react-native-community/netinfo";
-import * as TaskManager from "expo-task-manager"
+import { authorizers } from "../../client";
 const serverCallModalIntialState = {
   title: Constants.language.generic.sorry,
   primaryButtonLabel: Constants.language.generic.accept,
   isModalVisible: false,
 };
-const LegalizeFormScreen = (props) => {
+const NonOperationalLegalizationsScreen = (props) => {
   const navigation = useNavigation();
   const [showSpinner, setShowSpinner] = useState(false);
   const [invalidModal, setInvalidModal] = useState(serverCallModalIntialState);
@@ -29,6 +29,9 @@ const LegalizeFormScreen = (props) => {
     { label: "Efectivo", value: "Efectivo" },
     { label: "Tarjeta", value: "Tarjeta" },
   ]);
+  const [openAuth, setOpenAuth] = useState(false);
+  const [valueAuth, setValueAuth] = useState(null);
+  const [itemsAuth, setItemsAuth] = useState([]);
   const [openTransport, setOpenTransport] = useState(false);
   const [valueTransport, setValueTransport] = useState(null);
   const [itemsTransport, setItemsTransport] = useState([
@@ -59,6 +62,7 @@ const LegalizeFormScreen = (props) => {
   const [valueBefore, setValueBefore] = useState("0");
   const [valueAfter, setValueAfter] = useState("0");
   const [comment, setComment] = useState("");
+  const [justification, setJustification] = useState("");
   const [otherConcept, setOtherConcept] = useState("");
   const [valueACPM, setValueACPM] = useState("");
   const [thirdService, setThirdService] = useState("");
@@ -73,7 +77,6 @@ const LegalizeFormScreen = (props) => {
   const [tableData, setTableData] = useState([["0", "0", "0", "0"]]);
   //CAMERA
   const [camImage, setCamImage] = useState(null);
-  const { visit } = props.route.params;
 
   const legalize = async (info) => {
     let url =
@@ -177,6 +180,7 @@ const LegalizeFormScreen = (props) => {
         type: "*/*",
         copyToCacheDirectory: false,
       });
+      console.log(doc);
       setCamImage(null);
       setResult(doc.name);
       setResult2(doc);
@@ -186,8 +190,24 @@ const LegalizeFormScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("VISITA: ", visit.visit.work_order_uuid)
+    fetchAuthorizers();
   }, []);
+
+  const fetchAuthorizers = async() => {
+    const auth = await authorizers();
+    console.log(auth.data);
+    let authorizators = []
+    auth.data.forEach((element) => {
+      const id = element.value;
+      const name = element.text;
+      authorizators.push({
+        label: name,
+        value: id,
+      });
+    });
+    setItemsAuth(authorizators)
+  }
+
   useEffect(() => {
     setValueLogistic(null);
     setValueBuy(null);
@@ -239,18 +259,15 @@ const LegalizeFormScreen = (props) => {
         type: "image/jpeg",
       });
     }
-    formData.append("legalization[customer_id]", visit.visit.customer_id);
-    formData.append(
-      "legalization[work_order_uuid]",
-      visit.visit.work_order_uuid
-    );
-    formData.append("legalization[event_id]", visit.id);
     formData.append("legalization[before_taxes_total]", valueBefore);
     formData.append("legalization[after_taxes_total]", valueAfter);
     formData.append("legalization[payment_method]", valuePay);
     formData.append("legalization[legalization_type]", valueTipo);
-    formData.append("legalization[user_id]", visit.visit.technicians[0].id);
-    formData.append("legalization[is_operative]", true);
+    const id = await AsyncStorage.getItem("userID");
+    formData.append("legalization[user_id]", id);
+    formData.append("legalization[licenser_id]", valueAuth);
+    formData.append("legalization[is_operative]", false);
+    formData.append("legalization[justification]", justification);
     if (valueTipo == "Logistico") {
       if (valueLogistic == null) {
         
@@ -377,7 +394,7 @@ const LegalizeFormScreen = (props) => {
     setTableData(newArray);
   }
   return (
-    <LegalizeFormComponent
+    <NonOperationalLegalizationsComponent
       //Legalization type dropdown
       openTipo={openTipo}
       valueTipo={valueTipo}
@@ -392,6 +409,13 @@ const LegalizeFormScreen = (props) => {
       setOpenPay={setOpenPay}
       setValuePay={setValuePay}
       setItemsPay={setItemsPay}
+      //Authorizators dropdown
+      openAuth={openAuth}
+      valueAuth={valueAuth}
+      itemsAuth={itemsAuth}
+      setOpenAuth={setOpenAuth}
+      setValueAuth={setValueAuth}
+      setItemsAuth={setItemsAuth}
       //Payment type dropdown
       openTransport={openTransport}
       valueTransport={valueTransport}
@@ -421,6 +445,9 @@ const LegalizeFormScreen = (props) => {
       //Comment
       comment={comment}
       setComment={setComment}
+      //Comment
+      justification={justification}
+      setJustification={setJustification}
       //otherConcept
       otherConcept={otherConcept}
       setOtherConcept={setOtherConcept}
@@ -454,4 +481,4 @@ const LegalizeFormScreen = (props) => {
   );
 };
 
-export default LegalizeFormScreen;
+export default NonOperationalLegalizationsScreen;
